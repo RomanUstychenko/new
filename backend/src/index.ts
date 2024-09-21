@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+const cors = require('cors');
 import dotenv from 'dotenv';
 dotenv.config(); 
 
@@ -10,6 +11,12 @@ const port = process.env.PORT || 5000;
 
 // Імпорт маршруту
 import authRouter from '././routes/api/users';
+
+
+
+
+app.use(cors());
+
 
 // Використання маршруту
 app.use("/api/users", authRouter);
