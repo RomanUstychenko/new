@@ -1,28 +1,48 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from "../../redux/store";
+import { loginUser } from '../../redux/auth/auth-operation';
 
 
 // Типізація для даних форми входу
-interface LoginData {
+interface LoginFormData {
     email: string;
     password: string;
   }
   
     const Login: React.FC = () => {
-    const dispatch = useDispatch();
+      const dispatch = useDispatch<AppDispatch>();
+      const { loading, error } = useSelector(
+        (state: RootState) => state.auth
+      );
   
     // Типізуємо функцію onLogin
-    const onLogin = (data: LoginData): void => {
-    //   dispatch(login(data));
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+      const loginData: LoginFormData = {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+      };
+      dispatch(loginUser(loginData));
     };
   
     return (
-      <div>
-        <h1>
-          Sign in please in your Menu
-        </h1>
-        
-      </div>
+      <form onSubmit={handleSubmit}>
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit" disabled={loading}>
+        {loading ? "Registering..." : "Login"}
+      </button>
+      {error && (
+  <p>
+    {typeof error === 'string'
+      ? error
+      : `${error?.status}: ${error?.message || 'Unknown error'}`}
+  </p>
+)}
+    </form>
     );
   };
 

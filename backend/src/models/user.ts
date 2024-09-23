@@ -1,4 +1,4 @@
-import { Schema, model, Document, Error } from 'mongoose';
+import { Schema, model, Document, Error, Types  } from 'mongoose';
 import Joi from 'joi';
 import handleMongooseError from '../helpers/handleMongooseError';
 
@@ -8,6 +8,7 @@ export interface IUser extends Document {
   password: string;
   logoURL: string; // Додаємо поле для аватара
   verificationToken: string; // Додаємо поле для токена підтвердження
+  _id: Types.ObjectId;
   verify: boolean; // Необов'язкове поле для підтвердження
 }
 

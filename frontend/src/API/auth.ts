@@ -11,7 +11,12 @@ interface LoginData {
   password: string;
 }
 
-interface AuthResponse {
+export interface AuthResponse {
+  // user: {
+    id: string;
+    name: string;
+    email: string;
+  // };
   token: string;
 }
 

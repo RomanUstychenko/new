@@ -8,6 +8,7 @@ import { authReducer, AuthState } from './auth/auth-slice';
 const persistConfig: PersistConfig<AuthState> = {
     key: 'root',
     storage,
+  whitelist: ['token'],
   };
   
 

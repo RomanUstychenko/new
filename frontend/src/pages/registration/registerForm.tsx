@@ -28,7 +28,8 @@ const RegisterForm: React.FC = () => {
 
     dispatch(registerUser(registerData));
   };
-
+console.log("isRegister", isRegister)
+console.log("error", error)
   return (
     <form onSubmit={handleSubmit}>
       <input type="text" name="name" placeholder="Name" required />
@@ -37,7 +38,13 @@ const RegisterForm: React.FC = () => {
       <button type="submit" disabled={loading}>
         {loading ? "Registering..." : "Register"}
       </button>
-      {error && <p>{error}</p>}
+      {error && typeof error !== "string" && (
+  <p>{error.status} {error.message}</p>
+)}
+{error && typeof error === "string" && (
+  <p>{error}</p>
+)}
+      
       {isRegister && <p>Registration successful!</p>}
     </form>
   );

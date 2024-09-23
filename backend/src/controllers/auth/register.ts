@@ -43,11 +43,7 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
 
   // Виклик функції хешування пароля і передача пароля
   const hashedPassword = await hashPassword(password);
- // використовується під час входу для порівняння введеного пароля з хешованим паролем
-  const comparePasswords = async (password: string, hashedPassword: string): Promise<boolean> => {
-    return await bcrypt.compare(password, hashedPassword);
-  };
-
+ 
   // Генерація аватара
 //   const logoURL = gravatar.url(email);
 const logoURL = getUIAvatar(name || 'User');
@@ -86,7 +82,9 @@ const logoURL = getUIAvatar(name || 'User');
     email: newUser.email,
     logoURL: newUser.logoURL,
     verify: newUser.verify,
+    id: newUser._id,
   });
+  // res.status(201).json(newUser);
 };
 
 export default register;
