@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[64],{64:(e,n,t)=>{t.r(n),t.d(n,{default:()=>i});t(43);var s=t(475),r=t(579);const i=()=>(0,r.jsxs)("div",{children:[(0,r.jsx)("h1",{children:"Welcome to the Home Page"}),(0,r.jsx)("button",{children:(0,r.jsx)(s.k2,{to:"/register",children:"Registration"})}),(0,r.jsx)("button",{children:(0,r.jsx)(s.k2,{to:"/login",children:"Login"})})]})}}]);
+//# sourceMappingURL=64.0497e229.chunk.js.map
