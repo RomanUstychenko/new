@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as api from '../../API/auth';
 import { AuthResponse } from '../../API/auth';
+import { AppDispatch, RootState } from '../store';
 interface AuthData {
   email: string;
   password: string;
@@ -12,9 +13,13 @@ interface ErrorResponse {
 }
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    logoURL?: string; // робимо ці поля опціональними
+  verify?: string;
+  },
   token: string;
 }
 
@@ -25,9 +30,10 @@ export const registerUser = createAsyncThunk<User, AuthData, { rejectValue: Erro
       const result: AuthResponse = await api.register(data);
 console.log("result", result)
       const user: User = {
-        id: result.id,
-        name: result.name,
-        email: result.email,
+        user: result.user,
+        // id: result.user.id,
+        // name: result.user.name,
+        // email: result.user.email,
         token: result.token, 
       };
       return user;
@@ -66,14 +72,16 @@ export const loginUser = createAsyncThunk<User, AuthData, { rejectValue: ErrorRe
   async (data, { rejectWithValue }) => {
     try {
       const result: AuthResponse = await api.login(data);
-      
+      console.log("result", result)
       // Перетворюємо AuthResponse на User
       const user: User = {
-        id: result.id,
-        name: result.name,
-        email: result.email,
+        // id: result.user.id,
+        // name: result.user.name,
+        // email: result.user.email,
+        user: result.user,
         token: result.token,
       };
+console.log("user", user)
       return user;
     } catch (error: any) {
       const errorResponse: ErrorResponse = {
@@ -85,7 +93,7 @@ export const loginUser = createAsyncThunk<User, AuthData, { rejectValue: ErrorRe
   }
 );
 
-export const logout = createAsyncThunk<void, void, { rejectValue: ErrorResponse }>(
+export const logoutUser = createAsyncThunk<void, void, { rejectValue: ErrorResponse }>(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
@@ -100,30 +108,49 @@ export const logout = createAsyncThunk<void, void, { rejectValue: ErrorResponse 
   }
 );
 
-// export const current = createAsyncThunk<User, void, { rejectValue: ErrorResponse, state: { auth: { token: string } } }>(
-//   'auth/current',
-//   async (_, { rejectWithValue, getState }) => {
-//     try {
-//       const { auth } = getState();
-//       const result: AuthResponse = await api.getCurrentUser(auth.token);
+export const current = createAsyncThunk<User, void, { rejectValue: ErrorResponse, state: RootState, dispatch: AppDispatch, }>(
+  'auth/current',
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      console.log("auth", auth)
+        const result: AuthResponse | null = await api.getCurrentUser(auth.token);
+        console.log("result", result)
       
-//       // Перетворюємо AuthResponse на User
-//       const user: User = {
-//         id: result.user.id,
-//         name: result.user.name,
-//         email: result.user.email,
-//         token: result.token,
-//       };
-//       return user;
-//     } catch (error: any) {
-//       const errorResponse: ErrorResponse = {
-//         status: error.response?.status || 500,
-//         message: error.response?.data?.message || 'Failed to fetch current user',
-//       };
-//       return rejectWithValue(errorResponse);
-//     }
-//   }
-// );
+      if (!result) {
+        // Якщо результат null, повертаємо помилку
+        console.log("null")
+        return rejectWithValue({
+          status: 401,
+          message: 'User not authenticated',
+        });
+      }
+
+      // Перетворюємо AuthResponse на User
+      const user: User = {
+        user: result.user,  
+        // user: {
+        //   email: result.user.email ,
+        // name: result.user.name,
+        // logoURL: result.user.logoURL ?? null,
+        // verify: result.user.verify ?? null,
+        // id: result.user.id,
+        // },
+        token: result.token,
+      };
+      console.log("user", user)
+      return user;
+    } catch (error: any) {
+      console.log("error")
+      const errorResponse: ErrorResponse = {
+        status: error.response?.status || 500,
+        message: error.response?.data?.message || 'Failed to fetch current user',
+      };
+      return rejectWithValue(errorResponse);
+    }
+  }
+);
+
 
 // export const userUpdate = createAsyncThunk<User, Partial<User>, { rejectValue: ErrorResponse }>(
 //   'auth/userUpdate',

@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore  } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, PersistConfig  } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -18,9 +18,13 @@ export const store = configureStore({
   reducer: {
     auth: persistedReducer, // Додаємо редюсер авторизації
   },
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware(),
+
 });
 
 export const persistor = persistStore(store);
+
 
 // Якщо ви використовуєте типізацію для RootState та AppDispatch
 export type RootState = ReturnType<typeof store.getState>;

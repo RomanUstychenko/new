@@ -10,6 +10,7 @@ export interface IUser extends Document {
   verificationToken: string; // Додаємо поле для токена підтвердження
   _id: Types.ObjectId;
   verify: boolean; // Необов'язкове поле для підтвердження
+  token: string;
 }
 
 // Регулярний вираз для перевірки email
@@ -40,6 +41,9 @@ const UserSchema: Schema<IUser> = new Schema({
   verify: {
     type: Boolean,
     default: false, 
+  },
+  token: {
+    type: String,
   },
 });
 

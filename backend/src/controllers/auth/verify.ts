@@ -7,7 +7,7 @@ import { HttpError } from '../../helpers';
 type VerifyRequest = Request<{ verificationToken: string }>;
 
 // Використовуємо параметризацію типу Request для додавання типу для params
-export const verify = async (req: VerifyRequest, res: Response, next: NextFunction): Promise<void> => {
+const verify = async (req: VerifyRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { verificationToken } = req.params;
   
@@ -31,3 +31,4 @@ export const verify = async (req: VerifyRequest, res: Response, next: NextFuncti
       next(error);  // Передача помилки далі до middleware для обробки помилок
     }
   };
+  export default verify;

@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 // Імпорт маршруту
 import authRouter from '././routes/api/users';
-
+import mainRouter from '././routes/api/main';
 
 
 
@@ -20,6 +20,7 @@ app.use(cors());
 
 // Використання маршруту
 app.use("/api/users", authRouter);
+app.use("/api/main", mainRouter);
 
 // Обробник помилок 404
 app.use((req: Request, res: Response) => {

@@ -1,3 +1,3 @@
 import validate from "./validate";
-
-export {validate}
+import authenticate from "./authenticate";
+export {validate,authenticate}

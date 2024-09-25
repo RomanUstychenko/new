@@ -78,11 +78,13 @@ const logoURL = getUIAvatar(name || 'User');
 
   // Відправка відповіді
   res.status(201).json({
+    user: {
     name: newUser.name,
     email: newUser.email,
     logoURL: newUser.logoURL,
     verify: newUser.verify,
     id: newUser._id,
+    },
   });
   // res.status(201).json(newUser);
 };

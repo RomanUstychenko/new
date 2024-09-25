@@ -12,11 +12,13 @@ interface LoginData {
 }
 
 export interface AuthResponse {
-  // user: {
+  user: {
     id: string;
     name: string;
     email: string;
-  // };
+    logoURL: string;
+    verify: string;
+  };
   token: string;
 }
 
@@ -56,5 +58,14 @@ export const logout = async (): Promise<void> => {
   await instance.post('/users/logout');
 };
 
-
+export const getCurrentUser = async (token: string | null): Promise<AuthResponse | null> => {
+  try {
+    setToken(token);
+    const { data } = await instance.get<AuthResponse>('/users/current');
+    return data;
+  } catch (error) {
+    setToken(null);
+    throw error;
+  }
+};
 export default instance;

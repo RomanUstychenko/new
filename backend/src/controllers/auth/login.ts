@@ -15,6 +15,9 @@ interface LoginRequest extends Request {
   body: {
     email: string;
     password: string;
+    name?: string;
+    logoURL?: string;
+    verify?: boolean;
   };
 }
 
@@ -43,14 +46,8 @@ const login = async (req: LoginRequest, res: Response, next: NextFunction): Prom
     const token = jwt.sign(payload, SECRET_KEY as string, { expiresIn: "1h" });
     await User.findByIdAndUpdate(user._id, { token });
 
-    res.json({
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-      token,
-    });
+   const { password: _, ...userWithoutPassword } = user.toObject();
+    res.status(201).json({user, token});
   } catch (error) {
     next(error);
   }
