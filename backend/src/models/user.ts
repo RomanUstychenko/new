@@ -45,7 +45,17 @@ const UserSchema: Schema<IUser> = new Schema({
   token: {
     type: String,
   },
+}, {
+  toJSON: {
+    virtuals: true, // Для підтримки віртуальних полів
+  },
 });
+  // Додаємо метод toJSON, щоб замінити _id на id
+  UserSchema.method('toJSON', function() {
+    const { _id, __v, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
 
 // Обробка помилок MongoDB
 UserSchema.post<IUser>('save', function (error: Error, doc: IUser, next: (err?: any) => void) {

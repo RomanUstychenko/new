@@ -9,6 +9,7 @@ import PrivateRoute from './components/routes/privateRoute/privateRoute';
 import PublicRoute from './components/routes/publicRoute/publicRoute';
 import { current } from './redux/auth/auth-operation';
 import { fetchMainCatalog } from './redux/catalog/catalog-operation';
+import { Navbar } from './components/navbar/navbar';
 
 const HomePage = lazy(() => import("./pages/homePage/homePage"));
 const Login = lazy(() => import("./pages/login/loginForm"));
@@ -35,6 +36,7 @@ const App: React.FC = () => {
       <Suspense 
       // fallback={<Loader />}
       >
+        <Navbar />
         <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/" element={<HomePage />} />

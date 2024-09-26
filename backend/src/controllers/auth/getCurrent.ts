@@ -21,7 +21,7 @@ const getCurrent = async (req: AuthenticatedRequest, res: Response, next: NextFu
     verify,
     token,
   } = req.user;
-  // const user = req.user
+  const user = req.user
 
   // res.json({
   //   _id,
@@ -31,13 +31,14 @@ const getCurrent = async (req: AuthenticatedRequest, res: Response, next: NextFu
   //   verify,
   // });
    res.status(201).json({
-    user: {
-      id: _id,
-      email,
-      name,
-      logoURL,
-      verify,
-    },
+    // user: {
+    //   _id,
+    //   email,
+    //   name,
+    //   logoURL,
+    //   verify,
+    // },
+    user,
     token    
   });
   // res.status(201).json(user);

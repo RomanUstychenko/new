@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import { logoutUser } from '../../redux/auth/auth-operation';
+// import { logoutUser } from '../../redux/auth/auth-operation';
 import { addMainCatalog } from '../../redux/catalog/catalog-operation';
-import { getMainCatalogs, selectIsLoading } from '../../redux/catalog/catalog-selector';
+import { selectIsLoading } from '../../redux/catalog/catalog-selector';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import { RootState } from '../../redux/store';
-
+import { MainCatalogs } from '../../components/catalogs/mainCatalogs/mainCatalogs';
+import { CatalogsWrap } from './main.styled';
 // Типізований хук useSelector
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
     const Main: React.FC = () => {
 
       const dispatch = useDispatch<AppDispatch>(); // правильно типізуємо dispatch
 
-      
-        const catalogs = useTypedSelector(getMainCatalogs);
+  
         const loading = useTypedSelector(selectIsLoading);
         const [name, setName] = useState('');
         
-        console.log("Catalogs", catalogs)
-      const onLogout = () => {
-        dispatch(logoutUser());
-        localStorage.clear();
-      };
+      
+      // const onLogout = () => {
+      //   dispatch(logoutUser());
+      //   localStorage.clear();
+      // };
 
       
       const handleSubmit = (e: React.FormEvent) => {
@@ -42,10 +42,9 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
       };
     
     return (
-      <div>
+      <main>
       <h1>main page</h1>
-
-      <button type="button" onClick={onLogout}>Logout</button>
+<CatalogsWrap>
 <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Catalog Name:</label>
@@ -62,15 +61,12 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
         </button>
       </form>
 
-
-        {catalogs.map(catalog => (
-          <li key={catalog.id}>
-            {catalog.name} - {catalog.owner} - {catalog.id}
-          </li>
-        ))}
+<MainCatalogs />
+</CatalogsWrap>
+       
       
       
-      </div>
+      </main>
     );
   };
 

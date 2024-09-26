@@ -13,6 +13,7 @@ export interface IMainCatalog extends Document {
       type: String,
       required: true,
     },
+    
     owner: {
         type: Schema.Types.ObjectId,
         required: true,
