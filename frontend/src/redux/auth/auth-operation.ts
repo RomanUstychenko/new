@@ -81,6 +81,7 @@ export const loginUser = createAsyncThunk<User, AuthData, { rejectValue: ErrorRe
         user: result.user,
         token: result.token,
       };
+      localStorage.setItem('token', result.token);
 console.log("user", user)
       return user;
     } catch (error: any) {
@@ -129,13 +130,6 @@ export const current = createAsyncThunk<User, void, { rejectValue: ErrorResponse
       // Перетворюємо AuthResponse на User
       const user: User = {
         user: result.user,  
-        // user: {
-        //   email: result.user.email ,
-        // name: result.user.name,
-        // logoURL: result.user.logoURL ?? null,
-        // verify: result.user.verify ?? null,
-        // id: result.user.id,
-        // },
         token: result.token,
       };
       console.log("user", user)

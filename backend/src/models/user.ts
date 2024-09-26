@@ -53,7 +53,7 @@ UserSchema.post<IUser>('save', function (error: Error, doc: IUser, next: (err?: 
 });
 
 // Створення моделі користувача
-export const User = model<IUser>('User', UserSchema);
+export const User = model<IUser>('User', UserSchema);  /// User назва шляху +s
 
 // Валідація реєстрації
 export const registerSchema = Joi.object({
