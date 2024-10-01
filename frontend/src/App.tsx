@@ -8,7 +8,7 @@ import './App.css';
 import PrivateRoute from './components/routes/privateRoute/privateRoute';
 import PublicRoute from './components/routes/publicRoute/publicRoute';
 import { current } from './redux/auth/auth-operation';
-import { fetchMainCatalog } from './redux/catalog/catalog-operation';
+import { fetchMainCatalog } from './redux/mainCatalog/mainCatalog-operation';
 import { Navbar } from './components/navbar/navbar';
 
 const HomePage = lazy(() => import("./pages/homePage/homePage"));

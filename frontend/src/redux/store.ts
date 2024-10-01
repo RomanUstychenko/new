@@ -3,7 +3,9 @@ import { persistStore, persistReducer, PersistConfig  } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import { authReducer, AuthState } from './auth/auth-slice';
-import { mainCatalogReducer, } from './catalog/catalog-slice';
+import { mainCatalogReducer, } from './mainCatalog/mainCatalog-slice';
+import { itemReducer } from './item/item-slice';
+// import { secondaryCatalogReducer } from './secondaryCatalog/SecondaryCatalog-slice';
 // Налаштування Redux store
 
 const persistConfig: PersistConfig<AuthState> = {
@@ -18,7 +20,8 @@ const persistConfig: PersistConfig<AuthState> = {
 export const store = configureStore({
   reducer: {
     auth: persistedReducer, // Додаємо редюсер авторизації
-    catalog: mainCatalogReducer,
+    mainCatalog: mainCatalogReducer,
+    item: itemReducer,
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware(),

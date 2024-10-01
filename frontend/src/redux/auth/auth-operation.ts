@@ -72,7 +72,7 @@ export const loginUser = createAsyncThunk<User, AuthData, { rejectValue: ErrorRe
   async (data, { rejectWithValue }) => {
     try {
       const result: AuthResponse = await api.login(data);
-      console.log("result", result)
+      // console.log("result", result)
       // Перетворюємо AuthResponse на User
       const user: User = {
         // id: result.user.id,
@@ -82,7 +82,7 @@ export const loginUser = createAsyncThunk<User, AuthData, { rejectValue: ErrorRe
         token: result.token,
       };
       localStorage.setItem('token', result.token);
-console.log("user", user)
+// console.log("user", user)
       return user;
     } catch (error: any) {
       const errorResponse: ErrorResponse = {
@@ -114,9 +114,9 @@ export const current = createAsyncThunk<User, void, { rejectValue: ErrorResponse
   async (_, { rejectWithValue, getState }) => {
     try {
       const { auth } = getState();
-      console.log("auth", auth)
+      // console.log("auth", auth)
         const result: AuthResponse | null = await api.getCurrentUser(auth.token);
-        console.log("result", result)
+        // console.log("result", result)
       
       if (!result) {
         // Якщо результат null, повертаємо помилку
@@ -132,7 +132,7 @@ export const current = createAsyncThunk<User, void, { rejectValue: ErrorResponse
         user: result.user,  
         token: result.token,
       };
-      console.log("user", user)
+      // console.log("user", user)
       return user;
     } catch (error: any) {
       console.log("error")

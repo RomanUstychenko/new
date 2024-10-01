@@ -4,27 +4,26 @@ import instance from './auth';
 export interface MainCatalogResponse {
   id: string;
   name: string;
+  type: string;
   owner: string;
   // Add other fields as necessary
 }
-
+export interface SecondaryCatalogResponse {
+  id: string;
+  name: string;
+  type: string;
+  owner: string;
+  mainCatalog: string;
+}
 interface AddMainCatalogData {
   name: string;
   // Add other fields as necessary
 }
+interface AddSecondaryCatalogData {
+  name: string;
+  openFolderId: string | null;
+}
 
-
-// export const getMainCatalog = async (): Promise<{ data: MainCatalog[] }> => {
-//   const { data } = await instance.get('/main');
-//   return { data };
-// };
-
-// export const getMainCatalog = async (): Promise<{ data: MainCatalogResponse[] }> => {
-//     const { data: result } = await instance.get<{ data: MainCatalogResponse[] }>('/main');
-//     return result;
-//   };
-
-;
 
   export const getMainCatalog = async (): Promise<MainCatalogResponse[]> => {
     const response = await instance.get< MainCatalogResponse[] >('/main');
@@ -36,6 +35,17 @@ export const addMainCatalog = async (data: AddMainCatalogData): Promise<MainCata
   return result;
 };
 
+export const getSecondaryCatalog = async (mainCatalog: string | null): Promise<SecondaryCatalogResponse[]> => {
+  const response = await instance.get< SecondaryCatalogResponse[] >(`/main/${mainCatalog}`);
+  console.log("response", response)
+  return response.data; // Повертаємо лише поле data, яке містить масив
+};
+export const addSecondaryCatalog = async (data: AddSecondaryCatalogData): Promise<SecondaryCatalogResponse> => {
+console.log("data", data)
+const {openFolderId, name} = data
+  const { data: result } = await instance.post(`/main/${openFolderId}`, {name});
+  return result;
+};
 
 // export const deleteSection = async (_id: string): Promise<MainCatalog> => {
 //   const { data } = await instance.delete(`/sections/${_id}`);

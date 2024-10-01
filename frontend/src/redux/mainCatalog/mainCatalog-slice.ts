@@ -1,49 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchMainCatalog, addMainCatalog } from './catalog-operation';
+import { fetchMainCatalog, fetchSecondaryCatalog, addMainCatalog, addSecondaryCatalog } from './mainCatalog-operation';
 
-// // Тип для початкового стану
-// interface MainCatalogState {
-//   loading: boolean;
-//   mainCatalog: {
-//     name: string | null;
-//     id: string | null;
-//     owner: string | null;
-//   }
-//   error: string | null;
-  
-// }
 
-// const initialState: MainCatalogState = {
-//   loading: false,
-//   mainCatalog: {
-//     name: null,
-//     id: null,
-//     owner: null,
-//         },
-//   error: null,
-
-// };
 // Тип для головного каталогу
 interface MainCatalog {
     name: string;
     id: string;
     owner: string;
   }
+  interface SecondaryCatalog {
+    name: string;
+    id: string;
+    owner: string;
+    mainCatalog: string;
+  }
   
   // Тип для початкового стану
   export interface MainCatalogState {
     loading: boolean;
     mainCatalog: MainCatalog[];
+    secondaryCatalog: SecondaryCatalog[];
     error: string | null;
   }
   
+
+
   const initialState: MainCatalogState = {
     loading: false,
     mainCatalog: [],
+    secondaryCatalog: [],
     error: null,
   };
-
 
 const mainCatalogSlice = createSlice({
   name: 'mainCatalog',
@@ -55,7 +43,6 @@ const mainCatalogSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      // Очікується, що fulfilled повертає об'єкт типу MainCatalog
       .addCase(fetchMainCatalog.fulfilled, (state, action: PayloadAction<MainCatalog[]>) => {
         console.log("action.payload", action.payload)
         state.loading = false;
@@ -66,6 +53,23 @@ const mainCatalogSlice = createSlice({
         state.loading = false;
         state.error = payload;
       })
+      .addCase(fetchSecondaryCatalog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSecondaryCatalog.fulfilled, (state, action: PayloadAction<SecondaryCatalog[]>) => {
+        console.log("action.payload", action.payload)
+        state.loading = false;
+        state.secondaryCatalog = action.payload;
+        console.log("state.secondaryCatalog", state.secondaryCatalog)
+      })
+      .addCase(fetchSecondaryCatalog.rejected, (state, { payload }: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+
+
       .addCase(addMainCatalog.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -80,6 +84,23 @@ const mainCatalogSlice = createSlice({
         store.loading = false;
         store.error = payload;
       })
+
+      .addCase(addSecondaryCatalog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addSecondaryCatalog.fulfilled, (state, action: PayloadAction<SecondaryCatalog>) => {
+        state.loading = false;
+        state.error = null;
+        state.secondaryCatalog.push(action.payload);
+        
+      })
+      .addCase(addSecondaryCatalog.rejected, (store, { payload }: PayloadAction<any>) => {
+        store.loading = false;
+        store.error = payload;
+      })
+
+
     //   .addCase(deleteSection.pending, pendingHandler)
     //   .addCase(deleteSection.fulfilled, (store, { payload }: PayloadAction<string>) => {
     //     store.loading = false;
