@@ -9,7 +9,7 @@ import { store, persistor } from './redux/store';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { GlobalStyles } from './index.styled';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -19,6 +19,7 @@ root.render(
     <PersistGate persistor={persistor} loading={null}>
     <BrowserRouter basename="new">
     <ThemeProvider theme={theme}>
+    <GlobalStyles /> {/* Додаємо глобальні стилі */}
     <App />
     </ThemeProvider>
     </BrowserRouter>

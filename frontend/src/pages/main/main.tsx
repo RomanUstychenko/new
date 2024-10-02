@@ -7,13 +7,24 @@ import { AppDispatch } from '../../redux/store';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import { RootState } from '../../redux/store';
 // import { MainCatalogs } from '../../components/catalogs/mainCatalogs/mainCatalogs';
-import { CatalogsWrap, OpenFolder, CloseFolder } from './main.styled';
+import { CatalogsWrap, 
+  OpenFolder, 
+  CloseArrow, 
+  CloseFolder, 
+  OpenArrow, 
+  CatalogList,
+  ButtonWrap,
+  Button,
+  ButtonIcon,
+  ButtonText,
+} from './main.styled';
 import { Modal } from '../../components/common/modal/modal';
-import ModalMainAddCatalog from '../../components/modals/mainAddCatalog/modalMainAddCatalog';
 import { getMainCatalogs } from '../../redux/mainCatalog/mainCatalog-selector';
 import { fetchSecondaryCatalog } from '../../redux/mainCatalog/mainCatalog-operation';
 import { fetchMainItems } from '../../redux/item/item-operation';
 import { SecondaryCatalogs } from '../../components/catalogs/secondaryCatalogs/secondaryCatalogs';
+import ModalAddCatalog from '../../components/modals/addCatalog/modalAddCatalog';
+
 // Типізований хук useSelector
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
     const Main: React.FC = () => {
@@ -43,11 +54,15 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
       }
 
     return (
-      <main>
-      <h1>main page</h1>
+      
+      
 <CatalogsWrap>
-
-      <button onClick={() => setModalActive(true)}>add Main Catalog</button>
+<ButtonWrap>
+  <ButtonIcon />
+      <Button onClick={() => setModalActive(true)}>
+        <ButtonText>Add Catalog</ButtonText>
+        </Button>
+      </ButtonWrap>
 
             {modalActive && (
               <Modal
@@ -56,8 +71,11 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
               onClick={closeModal}
 
               >
-                <ModalMainAddCatalog 
-                closeModal={closeModal}/>
+                <ModalAddCatalog 
+                closeModal={closeModal}
+                isSecondary={false}
+                openFolderId={null}
+                />
               </Modal>
             )}
 
@@ -65,9 +83,9 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
              {mainCatalogs.map(catalog => (
           <li key={catalog.id}>
             
-          <span onClick={(e) => handleFolderClick(catalog.id, e)}> 
-          {openFolderId === catalog.id ? <OpenFolder /> : <CloseFolder />}
-             <p>{catalog.name}</p> </span>
+          <CatalogList onClick={(e) => handleFolderClick(catalog.id, e)}> 
+          {openFolderId === catalog.id ? <><CloseArrow /><OpenFolder /></> : <><OpenArrow /><CloseFolder /></>}
+             <p>{catalog.name}</p> </CatalogList>
           {openFolderId === catalog.id && 
           <SecondaryCatalogs 
           openFolderId={openFolderId}/>
@@ -79,7 +97,7 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
        
       
       
-      </main>
+     
     );
   };
 

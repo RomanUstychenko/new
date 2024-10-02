@@ -5,22 +5,23 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import { selectIsLoading } from '../../../redux/mainCatalog/mainCatalog-selector';
 import { addMainCatalog } from '../../../redux/mainCatalog/mainCatalog-operation';
+import { addSecondaryCatalog } from '../../../redux/mainCatalog/mainCatalog-operation';
+import { ModalForm } from './modalAddCatalog.styled';
 
-import { ModalForm } from './modalMainAddCatalog.styled';
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 
 interface ModalProps {
-    
+    openFolderId: string | null;
     closeModal: () => void;
-    
+    isSecondary: boolean;
   }
-const  ModalMainAddCatalog: React.FC <ModalProps>= ({closeModal}) => {
-
-    const loading = useTypedSelector(selectIsLoading);
-    const [name, setName] = useState('');
+const  ModalAddCatalog: React.FC <ModalProps>= ({closeModal, openFolderId, isSecondary}) => {
 
     const dispatch = useDispatch<AppDispatch>();
+    const [name, setName] = useState('');
+
+    const loading = useTypedSelector(selectIsLoading);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,16 +29,22 @@ const  ModalMainAddCatalog: React.FC <ModalProps>= ({closeModal}) => {
           alert('Please fill in all fields');
           return;
         }
+        if (isSecondary) {
+        dispatch(addSecondaryCatalog({ openFolderId, name }));
+        console.log("openFolderId", openFolderId)
+        
+      } else {
+        console.log("else")
         dispatch(addMainCatalog({ name }));
-        setName('');
+      }
+      setName('');
         closeModal()
-      };
-  return (
+    } 
 
-
-    <ModalForm 
-    onClick={e => e.stopPropagation()}
-    onSubmit={handleSubmit}>
+    return (
+<ModalForm 
+onClick={e => e.stopPropagation()}
+onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Catalog Name:</label>
           <input
@@ -52,8 +59,7 @@ const  ModalMainAddCatalog: React.FC <ModalProps>= ({closeModal}) => {
           {loading ? 'Adding...' : 'Add Catalog'}
         </button>
       </ModalForm>
-  )
+    )
 }
 
-
-export default ModalMainAddCatalog;
+export default ModalAddCatalog;

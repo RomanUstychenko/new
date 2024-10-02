@@ -32,7 +32,7 @@ const App: React.FC = () => {
   }, [dispatch, navigate]);
 
   return (
-    <div >
+    // <div >
       <Suspense 
       // fallback={<Loader />}
       >
@@ -48,7 +48,7 @@ const App: React.FC = () => {
           </Route>
         </Routes>
       </Suspense>
-    </div>
+    // </div>
   );
 };
 

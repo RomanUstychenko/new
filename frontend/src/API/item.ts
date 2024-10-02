@@ -13,8 +13,13 @@ export interface MainItemResponse {
 export interface AddMainItemData {
   name: string;
   price: string;
-  description: string;
+  description: string| null;
   catalog: string | null;
+}
+
+export interface AddSecondaryItemData  {
+  catalog: string | null;
+  fields: { [key: string]: string };
 }
 
 
@@ -23,19 +28,26 @@ export interface AddMainItemData {
     return response.data; // Повертаємо лише поле data, яке містить масив
   };
 
-export const addMainItem = async (data: AddMainItemData): Promise<MainItemResponse> => {
-  const {catalog, ...itemData} = data;
-  console.log("itemData", itemData)
-  const { data: result } = await instance.post(`/items/${catalog}`, itemData);
+export const addMainItem = async (data: AddSecondaryItemData): Promise<MainItemResponse> => {
+  const {catalog, fields} = data;
+  console.log("itemData", fields)
+  const { data: result } = await instance.post(`/items/${catalog}`, fields);
 
   return result;
 };
 
-// export const getSecondaryCatalog = async (mainCatalog: string | null): Promise<SecondaryCatalogResponse[]> => {
-//   const response = await instance.get< SecondaryCatalogResponse[] >(`/main/${mainCatalog}`);
-//   console.log("response", response)
-//   return response.data; // Повертаємо лише поле data, яке містить масив
-// };
+export const getSecondaryItem = async (catalog: string | null): Promise<MainItemResponse[]> => {
+  const response = await instance.get< MainItemResponse[] >(`/items/secondary/${catalog}`);
+  return response.data; // Повертаємо лише поле data, яке містить масив
+};
+
+export const addSecondaryItem = async (data: AddSecondaryItemData): Promise<MainItemResponse> => {
+  const {catalog, fields} = data;
+  console.log("itemData", fields)
+  
+  const { data: result } = await instance.post(`/items/secondary/${catalog}`, fields);
+  return result;
+}
 
 // export const deleteSection = async (_id: string): Promise<MainCatalog> => {
 //   const { data } = await instance.delete(`/sections/${_id}`);

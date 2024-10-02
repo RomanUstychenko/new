@@ -61,7 +61,7 @@ export const Item = model<IItem>('item', ItemSchema);  /// User назва шл�
 export const addSchema = Joi.object({
     name: Joi.string().required(),
     price: Joi.string().required(),
-    description: Joi.string(),
+    description: Joi.string().empty("").default("default value"),
     // catalog: Joi.string().required(),
 
   });

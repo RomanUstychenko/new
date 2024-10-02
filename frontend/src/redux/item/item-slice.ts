@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchMainItems, addMainItem } from './item-operation';
+import { fetchMainItems, fetchSecondaryItems, addMainItem, addSecondaryItem } from './item-operation';
 
 // Тип для головного каталогу
 interface MainItem {
@@ -15,10 +15,13 @@ interface MainItem {
 
   
   interface SecondaryItem {
-    name: string;
     id: string;
-    owner: string;
-    mainCatalog: string;
+  name: string;
+  price: string;
+  description: string;
+  type: string;
+  catalog: string;
+  owner: string;
   }
   
   // Тип для початкового стану
@@ -58,20 +61,20 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = payload;
       })
-      // .addCase(fetchSecondaryCatalog.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(fetchSecondaryCatalog.fulfilled, (state, action: PayloadAction<SecondaryCatalog[]>) => {
-      //   console.log("action.payload", action.payload)
-      //   state.loading = false;
-      //   state.secondaryCatalog = action.payload;
-      //   console.log("state.secondaryCatalog", state.secondaryCatalog)
-      // })
-      // .addCase(fetchSecondaryCatalog.rejected, (state, { payload }: PayloadAction<any>) => {
-      //   state.loading = false;
-      //   state.error = payload;
-      // })
+      .addCase(fetchSecondaryItems.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSecondaryItems.fulfilled, (state, action: PayloadAction<SecondaryItem[]>) => {
+        console.log("action.payload", action.payload)
+        state.loading = false;
+        state.secondaryItem = action.payload;
+        console.log("state.secondaryCatalog", state.secondaryItem)
+      })
+      .addCase(fetchSecondaryItems.rejected, (state, { payload }: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = payload;
+      })
 
 
 
@@ -86,6 +89,21 @@ const itemSlice = createSlice({
         
       })
       .addCase(addMainItem.rejected, (store, { payload }: PayloadAction<any>) => {
+        store.loading = false;
+        store.error = payload;
+      })
+
+      .addCase(addSecondaryItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addSecondaryItem.fulfilled, (state, action: PayloadAction<MainItem>) => {
+        state.loading = false;
+        state.error = null;
+        state.secondaryItem.push(action.payload);
+        
+      })
+      .addCase(addSecondaryItem.rejected, (store, { payload }: PayloadAction<any>) => {
         store.loading = false;
         store.error = payload;
       })
