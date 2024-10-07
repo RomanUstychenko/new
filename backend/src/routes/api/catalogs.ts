@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 
 import { validate, authenticate } from '../../middlewares';
-import { schemas } from '../../models/mainCatalog';
+import { schemas } from '../../models/catalog';
 import ctrlWrapper from '../../helpers/ctrlWrapper';
 import { listMainCatalog, addMainCatalog } from '../../controllers/catalogs/mainCatalog';
 import { addSecondaryCatalog, listSecondaryCatalog } from '../../controllers/catalogs/secondaryCatalog';

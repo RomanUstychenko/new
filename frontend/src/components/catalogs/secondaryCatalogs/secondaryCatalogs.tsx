@@ -11,9 +11,19 @@ import { Modal } from "../../common/modal/modal";
 import ModalAddCatalog from "../../modals/addCatalog/modalAddCatalog";
 // import ModalMainAddItem from "../../modals/mainAddItem/modalMainAddItem";
 import ModalAddItem from "../../modals/addItem/modalAddItem";
-import { OpenFolder, CloseFolder } from "./secondaryCatalogs.styled";
+import { CatalogsWrap, CatalogList } from "./secondaryCatalogs.styled";
+
+import { ButtonsWrap,
+  ButtonWrap,
+  ButtonFolderIcon,
+  ButtonItemIcon,
+  Button,
+  ButtonText, } from "../../common/generalStyle/addCatalogItemButton.styled"; 
 import { SecondaryItems } from "../../items/secondaryItems/secondaryItems";
 import { fetchSecondaryItems } from "../../../redux/item/item-operation";
+import OpenCloseIcon from "../../common/openCloseIcon/openCloseIcon";
+import { getButtonStatus } from "../../../redux/button/button-selector";
+import { setButton } from "../../../redux/button/button-slice";
 
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
@@ -26,7 +36,7 @@ export const SecondaryCatalogs: React.FC<SecondaryCatalogsProps> = ({openFolderI
   const dispatch = useDispatch<AppDispatch>();
   
     const secondaryCatalogs = useTypedSelector(getSecondaryCatalogs);
-    
+    const buttonStatus = useTypedSelector(getButtonStatus);
 
     const [modalActive, setModalActive] = useState<boolean>(false);
     const [modalActiveItem, setModalActiveItem] = useState<boolean>(false);
@@ -47,12 +57,23 @@ setOpenSecondaryFolderId(newOpenFolder);
         console.log("newOpenFolder", newOpenFolder)
         // dispatch(fetchSecondaryCatalog(newOpenFolder));
         dispatch(fetchSecondaryItems(newOpenFolder))
+
+console.log("відкрита головна папка", openFolderId)
+console.log("buttonStatus", buttonStatus)
+console.log("відкрита другорядна папка", id)
+        if (buttonStatus === id) {
+          console.log("if")
+          dispatch(setButton(openFolderId));
+        } else {
+          console.log("else")
+        dispatch(setButton(newOpenFolder))
+        }
         
     };
     
     return (
 
-        <div>
+        <CatalogsWrap>
              {modalActive && (
             <Modal
             active={modalActive}
@@ -79,16 +100,33 @@ isSecondaryItem={false}
 />
             </Modal>
         )}
-<button onClick={() => setModalActive(true)}>Add Secondary Catalog</button>
-<button onClick={() => setModalActiveItem(true)}>Add Main Item</button>
-     
+{buttonStatus === openFolderId && (
+  <ButtonsWrap>
+        <ButtonWrap>
+      <ButtonFolderIcon />
+      <Button onClick={() => setModalActive(true)}>
+       <ButtonText>Add Catalog</ButtonText> 
+        </Button>
+        </ButtonWrap>
+        <ButtonWrap>
+      <ButtonItemIcon />
+      <Button onClick={() => setModalActiveItem(true)}>
+       <ButtonText>Add Item</ButtonText> 
+        </Button>
+        </ButtonWrap>
+</ButtonsWrap>
+)}
+        
 <ul>
              {secondaryCatalogs.map(catalog => (
           <li key={catalog.id}>
             
-            <span onClick={(e) => handleFolderClick(catalog.id, e)}> 
-          {openSecondaryFolderId === catalog.id ? <OpenFolder /> : <CloseFolder />}
-             <p>{catalog.name}</p> </span>
+            <CatalogList onClick={(e) => handleFolderClick(catalog.id, e)}> 
+          <OpenCloseIcon 
+            openFolderId={openSecondaryFolderId}
+            catalog={catalog.id}
+            />
+             <p>{catalog.name}</p> </CatalogList>
              {openSecondaryFolderId === catalog.id && 
           <SecondaryItems 
           openSecondaryFolderId={openSecondaryFolderId}/>
@@ -98,7 +136,7 @@ isSecondaryItem={false}
 
           </ul>
 <MainItems />
-        </div>
+        </CatalogsWrap>
        
     )
 }

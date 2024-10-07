@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 // Імпорт маршруту
 import authRouter from '././routes/api/users';
-import mainRouter from './routes/api/mainCatalog';
+import mainRouter from './routes/api/catalogs';
 import itemRouter from'./routes/api/items';
 
 

@@ -25,13 +25,13 @@ string | null,
 'mainItems/fetch',
 async (data, { rejectWithValue }) => {
   try {
-  console.log("data", data)
+  // console.log("data", data)
     const result: MainItemResponse[] = await api.getMainItem(data);
-    console.log("result", result);
+    // console.log("result", result);
 
     if (!result) {
       // Якщо результат null, повертаємо помилку
-      console.log("null");
+      // console.log("null");
       return rejectWithValue({
         status: 401,
         message: 'no catalog',
@@ -56,13 +56,13 @@ string | null,
 'secondaryItems/fetch',
 async (data, { rejectWithValue }) => {
   try {
-  console.log("data", data)
+  // console.log("data", data)
     const result: MainItemResponse[] = await api.getSecondaryItem(data);
-    console.log("result", result);
+    // console.log("result", result);
 
     if (!result) {
       // Якщо результат null, повертаємо помилку
-      console.log("null");
+      // console.log("null");
       return rejectWithValue({
         status: 401,
         message: 'no catalog',

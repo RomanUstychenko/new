@@ -7,11 +7,7 @@ import { AppDispatch } from '../../redux/store';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import { RootState } from '../../redux/store';
 // import { MainCatalogs } from '../../components/catalogs/mainCatalogs/mainCatalogs';
-import { CatalogsWrap, 
-  OpenFolder, 
-  CloseArrow, 
-  CloseFolder, 
-  OpenArrow, 
+import { CatalogsWrap,
   CatalogList,
   ButtonWrap,
   Button,
@@ -24,8 +20,10 @@ import { fetchSecondaryCatalog } from '../../redux/mainCatalog/mainCatalog-opera
 import { fetchMainItems } from '../../redux/item/item-operation';
 import { SecondaryCatalogs } from '../../components/catalogs/secondaryCatalogs/secondaryCatalogs';
 import ModalAddCatalog from '../../components/modals/addCatalog/modalAddCatalog';
+import OpenCloseIcon from '../../components/common/openCloseIcon/openCloseIcon';
+import { getButtonStatus } from '../../redux/button/button-selector';
+import { setButton } from '../../redux/button/button-slice';
 
-// Типізований хук useSelector
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
     const Main: React.FC = () => {
     
@@ -34,21 +32,28 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
       const [openFolderId, setOpenFolderId] = useState<string | null>(null);
 
       const mainCatalogs = useTypedSelector(getMainCatalogs);
-      // const secondaryCatalogs = useTypedSelector(getSecondaryCatalogs);
+      const buttonStatus = useTypedSelector(getButtonStatus);
   
       const dispatch = useDispatch<AppDispatch>();
   
+      console.log("buttonStatus", buttonStatus)
       const handleFolderClick = (id: string, e: React.FormEvent) => {
           e.preventDefault();
           
-  const newOpenFolder = openFolderId === id ? null : id;
+  const newOpenFolder = openFolderId === id ? "main" : id;
       setOpenFolderId(newOpenFolder);
   
           console.log("newOpenFolder", newOpenFolder)
           dispatch(fetchSecondaryCatalog(newOpenFolder));
           dispatch(fetchMainItems(newOpenFolder))
-          
+
+          if (buttonStatus === newOpenFolder) {
+            dispatch(setButton("main"));
+          } else {
+          dispatch(setButton(newOpenFolder))
+          }
       };
+
       const closeModal = () => {
         setModalActive(false)
       }
@@ -57,12 +62,16 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
       
       
 <CatalogsWrap>
-<ButtonWrap>
+
+  {buttonStatus === "main" && (
+    <ButtonWrap>
   <ButtonIcon />
       <Button onClick={() => setModalActive(true)}>
         <ButtonText>Add Catalog</ButtonText>
         </Button>
       </ButtonWrap>
+    )}
+
 
             {modalActive && (
               <Modal
@@ -84,7 +93,10 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
           <li key={catalog.id}>
             
           <CatalogList onClick={(e) => handleFolderClick(catalog.id, e)}> 
-          {openFolderId === catalog.id ? <><CloseArrow /><OpenFolder /></> : <><OpenArrow /><CloseFolder /></>}
+            <OpenCloseIcon 
+            openFolderId={openFolderId}
+            catalog={catalog.id}
+            />
              <p>{catalog.name}</p> </CatalogList>
           {openFolderId === catalog.id && 
           <SecondaryCatalogs 
@@ -102,3 +114,4 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
   };
 
   export default Main;
+

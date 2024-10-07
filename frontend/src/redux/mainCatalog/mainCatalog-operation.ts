@@ -28,11 +28,11 @@ interface ErrorResponse {
     try {
     
       const result: MainCatalogResponse[] = await api.getMainCatalog();
-      console.log("result", result);
+      // console.log("result", result);
 
       if (!result) {
         // Якщо результат null, повертаємо помилку
-        console.log("null");
+        // console.log("null");
         return rejectWithValue({
           status: 401,
           message: 'no catalog',
@@ -57,13 +57,13 @@ string | null,
 'secondaryCatalog/fetch',
 async (data, { rejectWithValue }) => {
   try {
-  console.log("data", data)
+  // console.log("data", data)
     const result: SecondaryCatalogResponse[] = await api.getSecondaryCatalog(data);
-    console.log("result", result);
+    // console.log("result", result);
 
     if (!result) {
       // Якщо результат null, повертаємо помилку
-      console.log("null");
+      // console.log("null");
       return rejectWithValue({
         status: 401,
         message: 'no catalog',
@@ -96,7 +96,7 @@ export const addSecondaryCatalog = createAsyncThunk<SecondaryCatalogResponse, Ad
   'secondaryCatalog/add',
   async (data, { rejectWithValue }) => {
     try {
-      console.log("data", data)
+      // console.log("data", data)
       const result = await api.addSecondaryCatalog(data);
       return result;
     } catch (error: any) {

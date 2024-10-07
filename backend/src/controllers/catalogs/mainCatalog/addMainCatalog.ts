@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { MainCatalog, IMainCatalog } from "../../../models/mainCatalog";
+import { Catalog, ICatalog } from "../../../models/catalog";
 
 interface CustomRequest extends Request {
   user?: {
@@ -12,7 +12,7 @@ const addMainCatalog = async (req: CustomRequest, res: Response, next: NextFunct
     const { _id: owner } = req.user!;
 console.log("owner", owner)
     // Використання типізації для req.body, якщо у вас є тип ISection
-    const result: IMainCatalog = await MainCatalog.create({ ...req.body, owner, type: "main",});
+    const result: ICatalog = await Catalog.create({ ...req.body, owner, type: "main",});
 console.log("result", result)
     res.status(201).json(result);
   } catch (error) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { MainCatalog, IMainCatalog } from "../../../models/mainCatalog";
+import { Catalog, ICatalog } from "../../../models/catalog";
 
 interface CustomRequest extends Request {
   user?: {
@@ -14,7 +14,7 @@ const listSecondaryCatalog = async (req: CustomRequest, res: Response, next: Nex
 
 console.log("owner", owner)  /// все вірно
 console.log("mainCatalog", mainCatalog)
-    const result: IMainCatalog[] = await MainCatalog.find({ owner, type: "secondary", mainCatalog }).populate("owner");
+    const result: ICatalog[] = await Catalog.find({ owner, type: "secondary", mainCatalog }).populate("owner");
 
 
 

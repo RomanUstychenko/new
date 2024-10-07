@@ -44,10 +44,10 @@ const mainCatalogSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchMainCatalog.fulfilled, (state, action: PayloadAction<MainCatalog[]>) => {
-        console.log("action.payload", action.payload)
+        // console.log("action.payload", action.payload)
         state.loading = false;
         state.mainCatalog = action.payload;
-        console.log("state.mainCatalog", state.mainCatalog)
+        // console.log("state.mainCatalog", state.mainCatalog)
       })
       .addCase(fetchMainCatalog.rejected, (state, { payload }: PayloadAction<any>) => {
         state.loading = false;
@@ -58,10 +58,10 @@ const mainCatalogSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchSecondaryCatalog.fulfilled, (state, action: PayloadAction<SecondaryCatalog[]>) => {
-        console.log("action.payload", action.payload)
+        // console.log("action.payload", action.payload)
         state.loading = false;
         state.secondaryCatalog = action.payload;
-        console.log("state.secondaryCatalog", state.secondaryCatalog)
+        // console.log("state.secondaryCatalog", state.secondaryCatalog)
       })
       .addCase(fetchSecondaryCatalog.rejected, (state, { payload }: PayloadAction<any>) => {
         state.loading = false;

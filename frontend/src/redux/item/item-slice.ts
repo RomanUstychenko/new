@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchMainItems, fetchSecondaryItems, addMainItem, addSecondaryItem } from './item-operation';
 
 // Тип для головного каталогу
-interface MainItem {
+export interface Item {
   id: string;
   name: string;
   price: string;
@@ -14,21 +14,21 @@ interface MainItem {
   }
 
   
-  interface SecondaryItem {
-    id: string;
-  name: string;
-  price: string;
-  description: string;
-  type: string;
-  catalog: string;
-  owner: string;
-  }
+  // interface SecondaryItem {
+  //   id: string;
+  // name: string;
+  // price: string;
+  // description: string;
+  // type: string;
+  // catalog: string;
+  // owner: string;
+  // }
   
   // Тип для початкового стану
   export interface ItemState {
     loading: boolean;
-    mainItem: MainItem[];
-    secondaryItem: SecondaryItem[];
+    mainItem: Item[];
+    secondaryItem: Item[];
     error: string | null;
   }
   
@@ -51,11 +51,11 @@ const itemSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMainItems.fulfilled, (state, action: PayloadAction<MainItem[]>) => {
-        console.log("action.payload", action.payload)
+      .addCase(fetchMainItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
+        // console.log("action.payload", action.payload)
         state.loading = false;
         state.mainItem = action.payload;
-        console.log("state.mainCatalog", state.mainItem)
+        // console.log("state.mainCatalog", state.mainItem)
       })
       .addCase(fetchMainItems.rejected, (state, { payload }: PayloadAction<any>) => {
         state.loading = false;
@@ -65,11 +65,11 @@ const itemSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchSecondaryItems.fulfilled, (state, action: PayloadAction<SecondaryItem[]>) => {
-        console.log("action.payload", action.payload)
+      .addCase(fetchSecondaryItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
+        // console.log("action.payload", action.payload)
         state.loading = false;
         state.secondaryItem = action.payload;
-        console.log("state.secondaryCatalog", state.secondaryItem)
+        // console.log("state.secondaryCatalog", state.secondaryItem)
       })
       .addCase(fetchSecondaryItems.rejected, (state, { payload }: PayloadAction<any>) => {
         state.loading = false;
@@ -82,7 +82,7 @@ const itemSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(addMainItem.fulfilled, (state, action: PayloadAction<MainItem>) => {
+      .addCase(addMainItem.fulfilled, (state, action: PayloadAction<Item>) => {
         state.loading = false;
         state.error = null;
         state.mainItem.push(action.payload);
@@ -97,7 +97,7 @@ const itemSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(addSecondaryItem.fulfilled, (state, action: PayloadAction<MainItem>) => {
+      .addCase(addSecondaryItem.fulfilled, (state, action: PayloadAction<Item>) => {
         state.loading = false;
         state.error = null;
         state.secondaryItem.push(action.payload);

@@ -2,7 +2,7 @@ import { Schema, model, Document, Error, Types  } from 'mongoose';
 import Joi from 'joi';
 import handleMongooseError from '../helpers/handleMongooseError';
 
-export interface IMainCatalog extends Document {
+export interface ICatalog extends Document {
     name: string;
     _id: Types.ObjectId;
     type: String,
@@ -10,7 +10,7 @@ export interface IMainCatalog extends Document {
     owner: Schema.Types.ObjectId;
   }
 
-  const MainCatalogSchema: Schema<IMainCatalog> = new Schema({
+  const CatalogSchema: Schema<ICatalog> = new Schema({
     name: {
       type: String,
       required: true,
@@ -33,18 +33,18 @@ export interface IMainCatalog extends Document {
   });
 
   // Додаємо метод toJSON, щоб замінити _id на id
-MainCatalogSchema.method('toJSON', function() {
+CatalogSchema.method('toJSON', function() {
   const { _id, __v, ...object } = this.toObject();
   object.id = _id;
   return object;
 });
 
-  MainCatalogSchema.post<IMainCatalog>('save', function (error: Error, doc: IMainCatalog, next: (err?: any) => void) {
+  CatalogSchema.post<ICatalog>('save', function (error: Error, doc: ICatalog, next: (err?: any) => void) {
     handleMongooseError(error, doc, next);
 });
 
 // Створення моделі користувача
-export const MainCatalog = model<IMainCatalog>('mainCatalog', MainCatalogSchema);  /// User назва шляху +s
+export const Catalog = model<ICatalog>('catalog', CatalogSchema);  /// User назва шляху +s
 
 // Валідація додавання
 export const addSchema = Joi.object({
@@ -52,8 +52,7 @@ export const addSchema = Joi.object({
     mainCatalog: Joi.string(),
   });
   
-  
-  // Експорт усіх схем
+
   export const schemas = {
     addSchema,
   };

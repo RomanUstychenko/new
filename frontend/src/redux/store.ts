@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import { authReducer, AuthState } from './auth/auth-slice';
 import { mainCatalogReducer, } from './mainCatalog/mainCatalog-slice';
 import { itemReducer } from './item/item-slice';
+import { buttonReducer } from './button/button-slice';
 // import { secondaryCatalogReducer } from './secondaryCatalog/SecondaryCatalog-slice';
 // Налаштування Redux store
 
@@ -22,6 +23,7 @@ export const store = configureStore({
     auth: persistedReducer, // Додаємо редюсер авторизації
     mainCatalog: mainCatalogReducer,
     item: itemReducer,
+    button: buttonReducer,
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware(),

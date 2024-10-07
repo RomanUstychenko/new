@@ -1,15 +1,9 @@
 import styled from "styled-components";
-import { FaRegFolderClosed, FaRegFolderOpen } from "react-icons/fa6";
 
 export const CatalogsWrap = styled.div`
-    
-    width: 400px;
-    border: 1px solid rgb(7, 94, 138);
+    margin-left: 20px;
+`
+export const CatalogList = styled.span`
+    display: flex;
 `
 
-export const CloseFolder = styled(FaRegFolderClosed)`
-    
-`
-export const OpenFolder = styled(FaRegFolderOpen)`
-    
-`
